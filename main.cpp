@@ -8,6 +8,9 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
 
+#include "addresses.hpp"
+
+
 
 namespace Memory {
     HWND hwnd;
@@ -64,17 +67,18 @@ namespace Menu {
     const char* WindowTitle;
 
     void Setup() {
-
+        
     }
 
     void Update() {
-        ImGui::Begin(WindowTitle);
+        ImGui::SetNextWindowSize(ImVec2(700, 400));
+        ImGui::Begin(WindowTitle, NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
         ImGui::End();
     }
 }
 namespace Cheat {
     void Update() {
-
+        
     }
 }
 namespace Easy_overlay {
