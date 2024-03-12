@@ -85,6 +85,8 @@ namespace Easy_overlay {
     int window_height;
     const char* WindowTitle = "RetroWare V2";
     
+    bool MenuOpen = true;
+    bool Menu_Switch_Open = true;
 
     int Create_Window() {
         if (!glfwInit())
@@ -110,6 +112,23 @@ namespace Easy_overlay {
 
         glfwSetWindowAttrib(window, GLFW_DECORATED, false);
         return 1;
+    }
+
+    void OpenExitMenu() {
+        if (!Menu_Switch_Open && GetAsyncKeyState(VK_INSERT) & 0x8000) {
+            Menu_Switch_Open = true;
+            MenuOpen = !MenuOpen;
+        }
+
+        if (!(GetAsyncKeyState(VK_INSERT) & 0x8000)) {
+            Menu_Switch_Open = false;
+        }
+
+        if (MenuOpen) {
+            glfwSetWindowAttrib(window, GLFW_MOUSE_PASSTHROUGH, false);
+        } else {
+            glfwSetWindowAttrib(window, GLFW_MOUSE_PASSTHROUGH, true);
+        }
     }
 
     void setup_imgui() {
@@ -150,9 +169,12 @@ namespace Easy_overlay {
     void Update() {
         glClear(GL_COLOR_BUFFER_BIT);
 
+        OpenExitMenu();
         ImguiNewFrame();
 
-        Menu::Update();
+        if (MenuOpen) {
+            Menu::Update();
+        }
         Cheat::Update();
 
         ImguiRender();
