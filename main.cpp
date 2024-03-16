@@ -68,6 +68,20 @@ namespace Memory {
 
         return true;
     }
+
+    float ReadPointerAddressFloat(uintptr_t base, std::vector<uintptr_t> pointer) {
+        uintptr_t addr = NULL;
+        ReadProcessMemory(handle, (uintptr_t*)(base + pointer[0]), &addr, sizeof(addr), 0);
+
+        for (int i = 1; i < pointer.size() - 1; i++) {
+            ReadProcessMemory(handle, (uintptr_t*)(addr + pointer[i]), &addr, sizeof(addr), 0);
+        }
+
+        float value = 0.0f;
+        ReadProcessMemory(handle, (uintptr_t*)(addr + pointer.back()), &value, sizeof(value), 0);
+
+        return value;
+    }
     
     void Setup() {
 
